@@ -17,7 +17,7 @@
 $(document).ready(function() {
     $('#queuetable').DataTable({
         serverSide: true,
-        ajax: 'http://localhost:8081/client',
+        ajax: 'http://people:8081/client',
         //ajax: 'arrays.txt',
         lengthChange: false,
         data: [],
