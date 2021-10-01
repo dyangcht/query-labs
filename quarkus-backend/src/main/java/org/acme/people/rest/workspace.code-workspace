@@ -1,0 +1,16 @@
+{
+    "folders": [
+		{
+			"path": "../../../../../../../../../../../java/tmp"
+		},
+		{
+			"path": "../../../../../../.."
+		}
+	],
+    "settings": {
+        "java.configuration.updateBuildConfiguration": "automatic",
+        "java.completion.enabled": false,
+        "java.debug.settings.enableRunDebugCodeLens": false,
+        "java.test.editor.enableShortcuts": false
+    }
+}

@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "birth": "1974-08-15",
+      "eyes": "BLUE",
+      "name": "Farid Ulyanov"
+    },
+    {
+      "id": 742,
+      "birth": "1994-02-03",
+      "eyes": "BLUE",
+      "name": "Cyan Chanter"
+    },
+    {
+      "id": 901,
+      "birth": "1999-02-25",
+      "eyes": "BROWN",
+      "name": "Cyan Ant"
+    }
+  ],
+  "draw": 1,
+  "recordsFiltered": 3,
+  "recordsTotal": 1003
+}
