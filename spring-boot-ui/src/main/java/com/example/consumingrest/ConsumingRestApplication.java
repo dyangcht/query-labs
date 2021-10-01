@@ -29,7 +29,7 @@ public class ConsumingRestApplication {
 	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
 		return args -> {
 			Quote quote = restTemplate.getForObject(
-					"http://localhost:8080/person/datatable?draw=1&start=0&length=10&search[value]=yan", Quote.class);
+					"http://people:8080/person/datatable?draw=1&start=0&length=10&search[value]=yan", Quote.class);
 			log.info(quote.toString());
 		};
 	}

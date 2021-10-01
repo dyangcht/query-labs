@@ -15,7 +15,7 @@ public class GreetingController {
 
     private final AtomicLong counter = new AtomicLong();
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://people:8080")
     @GetMapping("/greeting")
     public Greeting greeting(@RequestParam(required = false, defaultValue = "World") String name) {
         System.out.println("==== get greeting ====");
@@ -32,7 +32,7 @@ public class GreetingController {
     public String getClient(@RequestParam(required = false, defaultValue = "World") String name) {
 
         RestTemplate restTemplate = new RestTemplate();
-        Quote quote = restTemplate.getForObject("http://localhost:8080/person/datatable?draw=1&start=0&length=10",
+        Quote quote = restTemplate.getForObject("http://people:8080/person/datatable?draw=1&start=0&length=10",
                 Quote.class);
         System.out.println(quote.toString());
         // http://localhost:8080/person/datatable?draw=1&start=0&length=10&search[value]=yan
