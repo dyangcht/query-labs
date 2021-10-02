@@ -17,7 +17,7 @@
 $(document).ready(function() {
     $('#queuetable').DataTable({
         serverSide: true,
-        ajax: 'http://spring-boot-ui-query-lab.apps.cluster1.opentlc.xyz/client',
+        ajax: '/client',
         //ajax: 'arrays.txt',
         lengthChange: false,
         data: [],
