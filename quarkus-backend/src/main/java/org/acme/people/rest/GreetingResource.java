@@ -40,6 +40,7 @@ public class GreetingResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/greeting/{name}")
     public String greeting(@PathParam("name") String name) {
+        log.info("name: " + name);
         return service.greeting(name);
     }
 }

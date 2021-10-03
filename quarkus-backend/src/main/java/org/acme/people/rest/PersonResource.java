@@ -39,6 +39,9 @@ import io.vertx.axle.core.eventbus.Message;
 @Path("/person")
 @ApplicationScoped
 public class PersonResource {
+
+    private static final Logger LOG = Logger.getLogger(PersonResource.class);
+
     @Inject
     EventBus bus;
 
@@ -74,6 +77,7 @@ public class PersonResource {
             @QueryParam(value = "length") int length, @QueryParam(value = "search[value]") String searchVal
 
     ) {
+        LOG.info("This is the datatable.");
         // TODO: Begin result
         DataTable result = new DataTable();
         result.setDraw(draw);
