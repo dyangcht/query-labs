@@ -4,7 +4,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
 import org.eclipse.microprofile.health.HealthCheckResponseBuilder;
-import org.eclipse.microprofile.health.Liveness;
+import org.eclipse.microprofile.health.Readiness;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ import javax.enterprise.context.ApplicationScoped;
 import org.jboss.logging.Logger;
 
 @ApplicationScoped
-@Liveness
+@Readiness
 public class DatabaseConnectionHealthCheck implements HealthCheck {
 
     @ConfigProperty(name = "database.up", defaultValue = "false")
@@ -37,7 +37,7 @@ public class DatabaseConnectionHealthCheck implements HealthCheck {
     public HealthCheckResponse call() {
 
         HealthCheckResponseBuilder responseBuilder = HealthCheckResponse.named("Database connection health check");
-
+        LOG.info("This is the HealthCheckResponse.");
         try {
             simulateDatabaseConnectionVerification();
             responseBuilder.up();
@@ -67,7 +67,7 @@ public class DatabaseConnectionHealthCheck implements HealthCheck {
             conn = DriverManager.getConnection(
                     "jdbc:postgresql://" + this.serverName + ":" + this.portNumber + "/" + this.dbName,
                     connectionProps);
-            LOG.info("This is the datatable.");
+            LOG.info("This is the db connection.");
             conn.close();
         } catch (SQLException e) {
             // throw new IllegalStateException("Cannot contact database");
