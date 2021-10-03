@@ -43,6 +43,7 @@ public class DatabaseConnectionHealthCheck implements HealthCheck {
             responseBuilder.up();
         } catch (IllegalStateException e) {
             // cannot access the database
+            LOG.info("cannot connect to postgre");
             responseBuilder.down().withData("error", e.getMessage());
         }
 
@@ -52,6 +53,7 @@ public class DatabaseConnectionHealthCheck implements HealthCheck {
     private void simulateDatabaseConnectionVerification() {
         databaseUp = getConnection();
         if (!databaseUp) {
+            LOG.info("databaseUp is false.");
             throw new IllegalStateException("Cannot contact database");
         }
     }
@@ -72,6 +74,7 @@ public class DatabaseConnectionHealthCheck implements HealthCheck {
             conn.close();
         } catch (SQLException e) {
             // throw new IllegalStateException("Cannot contact database");
+            LOG.info("SQLException: " + e.getMessage());
             return false;
         }
         System.out.println("Connected to database");
