@@ -62,12 +62,13 @@ public class DatabaseConnectionHealthCheck implements HealthCheck {
         Properties connectionProps = new Properties();
         connectionProps.put("user", this.userName);
         connectionProps.put("password", this.userPWD);
-
+        String url = "jdbc:postgresql://" + this.serverName + ":" + this.portNumber + "/" + this.dbName;
+        LOG.info("db string: " + url);
+        LOG.info("user: " + this.userName + "  pwd: " + this.userPWD);
         try {
-            conn = DriverManager.getConnection(
-                    "jdbc:postgresql://" + this.serverName + ":" + this.portNumber + "/" + this.dbName,
-                    connectionProps);
-            LOG.info("This is the db connection.");
+
+            conn = DriverManager.getConnection(url, connectionProps);
+            LOG.info("db connection!");
             conn.close();
         } catch (SQLException e) {
             // throw new IllegalStateException("Cannot contact database");
