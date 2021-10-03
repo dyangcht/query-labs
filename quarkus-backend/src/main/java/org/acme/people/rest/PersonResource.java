@@ -98,7 +98,7 @@ public class PersonResource {
 
     @Transactional
     void onStart(@Observes StartupEvent ev) {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 2000; i++) {
             String name = CuteNameGenerator.generate();
             LocalDate birth = LocalDate.now().plusWeeks(Math.round(Math.floor(Math.random() * 40 * 52 * -1)));
             EyeColor color = EyeColor.values()[(int) (Math.floor(Math.random() * EyeColor.values().length))];
