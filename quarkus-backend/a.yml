@@ -1,0 +1,21 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: postgres-database
+  namespace: default
+  labels:
+    cr: postgresql-database
+    owner: postgresqloperator
+spec:
+  ports:
+    - name: postgresql-database
+      protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    cr: postgresql-database
+    owner: postgresqloperator
+  type: ClusterIP
+  sessionAffinity: None
+  ipFamilies:
+    - IPv4
