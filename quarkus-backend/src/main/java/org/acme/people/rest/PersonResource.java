@@ -36,6 +36,8 @@ import javax.ws.rs.POST;
 import java.util.concurrent.CompletionStage;
 import io.vertx.axle.core.eventbus.Message;
 
+import org.jboss.logging.Logger;
+
 @Path("/person")
 @ApplicationScoped
 public class PersonResource {
