@@ -1,0 +1,76 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: people
+  namespace: demo
+  uid: 36379e41-4de0-4223-b001-6eeacf97176a
+  resourceVersion: '45203'
+  creationTimestamp: '2021-10-07T13:49:33Z'
+  labels:
+    app.kubernetes.io/name: people
+    app.kubernetes.io/version: 1.0-SNAPSHOT
+    app.openshift.io/runtime: quarkus
+  annotations:
+    app.openshift.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
+    app.quarkus.io/build-timestamp: '2021-10-07 - 13:46:11 +0000'
+    app.quarkus.io/commit-id: c62e365964e66e336b0de3b94fd05fa11d0aab6f
+    app.quarkus.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
+    openshift.io/host.generated: 'true'
+  managedFields:
+    - manager: okhttp
+      operation: Update
+      apiVersion: route.openshift.io/v1
+      time: '2021-10-07T13:49:33Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:app.openshift.io/vcs-url': {}
+            'f:app.quarkus.io/build-timestamp': {}
+            'f:app.quarkus.io/commit-id': {}
+            'f:app.quarkus.io/vcs-url': {}
+          'f:labels':
+            .: {}
+            'f:app.kubernetes.io/name': {}
+            'f:app.kubernetes.io/version': {}
+            'f:app.openshift.io/runtime': {}
+        'f:spec':
+          'f:path': {}
+          'f:port':
+            .: {}
+            'f:targetPort': {}
+          'f:to':
+            'f:kind': {}
+            'f:name': {}
+            'f:weight': {}
+          'f:wildcardPolicy': {}
+    - manager: openshift-router
+      operation: Update
+      apiVersion: route.openshift.io/v1
+      time: '2021-10-07T13:49:33Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          'f:ingress': {}
+spec:
+  host: people-demo.apps.cluster-2f87.2f87.sandbox1328.opentlc.com
+  path: /
+  to:
+    kind: Service
+    name: people
+    weight: 100
+  port:
+    targetPort: 8080
+  wildcardPolicy: None
+status:
+  ingress:
+    - host: people-demo.apps.cluster-2f87.2f87.sandbox1328.opentlc.com
+      routerName: default
+      conditions:
+        - type: Admitted
+          status: 'True'
+          lastTransitionTime: '2021-10-07T13:49:33Z'
+      wildcardPolicy: None
+      routerCanonicalHostname: router-default.apps.cluster-2f87.2f87.sandbox1328.opentlc.com
+

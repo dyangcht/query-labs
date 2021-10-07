@@ -1,0 +1,50 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"spring-boot-ui:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"spring-boot-ui\")].image"}]
+    openshift.io/generated-by: OpenShiftNewApp
+  name: spring-boot-ui
+  labels:
+    app: spring-boot-ui
+    app.kubernetes.io/component: spring-boot-ui
+    app.kubernetes.io/instance: spring-boot-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: spring-boot-ui
+  template:
+    metadata:
+      labels:
+        deployment: spring-boot-ui
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+    spec:
+      containers:
+        - name: spring-boot-ui
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/demo/spring-boot-ui@sha256:999549a1b7175d4735173ac02d88c7fb2be9bb51b06b73682f0b8e806a6f2c6b
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+            - containerPort: 8778
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
