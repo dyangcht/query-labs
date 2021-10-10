@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ui-env
+data:
+  DB_HOST: "people"
+  DB_PORT: "5432"
+  DB_KIND: "postgresql"
+  DB_URL: "jdbc:postgresql://postgres-database/person"
+  DB_DRIVER: "org.postgresql.Driver"

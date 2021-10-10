@@ -82,10 +82,13 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           terminationMessagePolicy: File
           image: >-
             dyangcht/qa
+          envFrom:
+          - configMapRef:
+              name: ui-env
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
