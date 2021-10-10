@@ -2,7 +2,6 @@ apiVersion: postgresql.dev4devs.com/v1alpha1
 kind: Database
 metadata:
   name: postgres-database
-  namespace: demo
 spec:
   size: 1
   databasePasswordKeyEnvVar: POSTGRESQL_PASSWORD

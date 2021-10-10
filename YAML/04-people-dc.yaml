@@ -18,8 +18,8 @@ spec:
       updatePeriodSeconds: 1
       intervalSeconds: 1
       timeoutSeconds: 600
-      maxUnavailable: 25%
-      maxSurge: 25%
+      maxUnavailable: 0
+      maxSurge: 2
   replicas: 4
   selector:
     app.kubernetes.io/name: people
@@ -85,7 +85,7 @@ spec:
           imagePullPolicy: IfNotPresent
           terminationMessagePolicy: File
           image: >-
-            image-registry.openshift-image-registry.svc:5000/demo/people@sha256:1d62f15129b3da598334cee62ecb83e0d1fd633ceca9dbd252752668d921acb5
+            dyangcht/qa
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
