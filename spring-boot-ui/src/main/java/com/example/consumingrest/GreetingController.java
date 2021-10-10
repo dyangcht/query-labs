@@ -2,6 +2,7 @@ package com.example.consumingrest;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,9 @@ public class GreetingController {
     private static final String template = "Hello, %s!";
 
     private final AtomicLong counter = new AtomicLong();
+
+    @Autowired
+    private SysConfig sysCfg;
 
     @CrossOrigin(origins = "http://people:8080")
     @GetMapping("/greeting")
@@ -30,9 +34,10 @@ public class GreetingController {
 
     @GetMapping("/client")
     public String getClient(@RequestParam(required = false, defaultValue = "World") String name) {
+        String dbHost = sysCfg.getHost();
 
         RestTemplate restTemplate = new RestTemplate();
-        Quote quote = restTemplate.getForObject("http://people:8080/person/datatable?draw=1&start=0&length=10",
+        Quote quote = restTemplate.getForObject("http://" + dbHost + ":8080/person/datatable?draw=1&start=0&length=10",
                 Quote.class);
         System.out.println(quote.toString());
         // http://localhost:8080/person/datatable?draw=1&start=0&length=10&search[value]=yan

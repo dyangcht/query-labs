@@ -2,6 +2,7 @@ package com.example.consumingrest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +21,9 @@ public class ConsumingRestApplication {
 		SpringApplication.run(ConsumingRestApplication.class, args);
 	}
 
+	@Autowired
+	private SysConfig sysCfg;
+
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder.build();
@@ -29,7 +33,8 @@ public class ConsumingRestApplication {
 	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
 		return args -> {
 			Quote quote = restTemplate.getForObject(
-					"http://people:8080/person/datatable?draw=1&start=0&length=10&search[value]=yan", Quote.class);
+					"http://" + sysCfg.getHost() + ":8080/person/datatable?draw=1&start=0&length=10&search[value]=yan",
+					Quote.class);
 			log.info(quote.toString());
 		};
 	}
