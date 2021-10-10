@@ -20,19 +20,6 @@ spec:
       timeoutSeconds: 600
       maxUnavailable: 25%
       maxSurge: 25%
-    resources: {}
-  triggers:
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - people
-        from:
-          kind: ImageStreamTag
-          namespace: demo
-          name: 'people:1.0-SNAPSHOT'
-        lastTriggeredImage: >-
-          image-registry.openshift-image-registry.svc:5000/demo/people@sha256:d2d96a02ccc94b929646ae87582c7c44ab5bd1e0c9c3a85fe3964a2aa613b651
   replicas: 4
   selector:
     app.kubernetes.io/name: people
@@ -45,10 +32,24 @@ spec:
         app.openshift.io/runtime: quarkus
       annotations:
         app.openshift.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
-        app.quarkus.io/build-timestamp: '2021-10-07 - 13:46:11 +0000'
-        app.quarkus.io/commit-id: c62e365964e66e336b0de3b94fd05fa11d0aab6f
         app.quarkus.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
     spec:
+      initContainers:
+        - name: init-when-postgres-ready
+          image: centos/postgresql-96-centos7
+          env:
+            - name: POSTGRESQL_USER
+              value: user
+            - name: POSTGRESQL_PASSWORD
+              value: user
+            - name: POSTGRESQL_DATABASE
+              value: db
+            - name: PGPASSWORD
+              value: sa
+          command:
+            - sh
+            - -c
+            - psql postgresql://sa:sa@postgres-database/person -c "\dt"
       containers:
         - resources: {}
           readinessProbe:
@@ -84,7 +85,7 @@ spec:
           imagePullPolicy: IfNotPresent
           terminationMessagePolicy: File
           image: >-
-            image-registry.openshift-image-registry.svc:5000/demo/people@sha256:d2d96a02ccc94b929646ae87582c7c44ab5bd1e0c9c3a85fe3964a2aa613b651
+            image-registry.openshift-image-registry.svc:5000/demo/people@sha256:1d62f15129b3da598334cee62ecb83e0d1fd633ceca9dbd252752668d921acb5
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst

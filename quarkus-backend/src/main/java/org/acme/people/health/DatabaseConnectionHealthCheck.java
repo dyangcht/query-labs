@@ -11,14 +11,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import javax.enterprise.context.ApplicationScoped;
+// import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import org.jboss.logging.Logger;
 
-@ApplicationScoped
+@RequestScoped
 @Readiness
 public class DatabaseConnectionHealthCheck implements HealthCheck {
-
-    @ConfigProperty(name = "database.up", defaultValue = "false")
+    private static final String PROPERTY = "database.up";
+    @ConfigProperty(name = PROPERTY)
     public boolean databaseUp;
     @ConfigProperty(name = "database.username", defaultValue = "false")
     public String userName;
@@ -37,7 +38,7 @@ public class DatabaseConnectionHealthCheck implements HealthCheck {
     public HealthCheckResponse call() {
 
         HealthCheckResponseBuilder responseBuilder = HealthCheckResponse.named("Database connection health check");
-        LOG.info("This is the HealthCheckResponse.");
+        LOG.info("This is the HealthCheckResponse." + databaseUp);
         try {
             simulateDatabaseConnectionVerification();
             responseBuilder.up();
