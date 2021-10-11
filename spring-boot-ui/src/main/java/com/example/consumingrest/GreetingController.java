@@ -32,6 +32,16 @@ public class GreetingController {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 
+    @GetMapping("/hostname")
+    public String getHostname() {
+        String dbHost = sysCfg.getHost();
+
+        RestTemplate restTemplate = new RestTemplate();
+        String quote = restTemplate.getForObject("http://" + dbHost + ":8080/person/hostname", String.class);
+        System.out.println(quote.toString());
+        return quote.toString();
+    }
+
     @GetMapping("/client")
     public String getClient(@RequestParam(required = false, defaultValue = "World") String name) {
         String dbHost = sysCfg.getHost();

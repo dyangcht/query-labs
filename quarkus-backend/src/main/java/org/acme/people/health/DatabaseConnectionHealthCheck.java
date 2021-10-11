@@ -11,11 +11,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-// import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
+// import javax.enterprise.context.RequestScoped;
 import org.jboss.logging.Logger;
 
-@RequestScoped
+// @RequestScoped
+@ApplicationScoped
 @Readiness
 public class DatabaseConnectionHealthCheck implements HealthCheck {
     private static final String PROPERTY = "database.up";

@@ -1,5 +1,6 @@
 package org.acme.people.rest;
 
+import java.net.InetAddress;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,32 +80,36 @@ public class PersonResource {
             @QueryParam(value = "length") int length, @QueryParam(value = "search[value]") String searchVal
 
     ) {
-        LOG.info("This is the datatable.");
-        // TODO: Begin result
         DataTable result = new DataTable();
-        result.setDraw(draw);
-        // TODO: Filter based on search
-        PanacheQuery<Person> filteredPeople;
+        try {
+            String name = InetAddress.getLocalHost().getHostName();
+            LOG.info("This is the datatable..." + name);
+            // TODO: Begin result
+            result.setDraw(draw);
+            // TODO: Filter based on search
+            PanacheQuery<Person> filteredPeople;
 
-        if (searchVal != null && !searchVal.isEmpty()) {
-            filteredPeople = Person.<Person>find("name like :search", Parameters.with("search", "%" + searchVal + "%"));
-        } else {
-            filteredPeople = Person.findAll();
+            if (searchVal != null && !searchVal.isEmpty()) {
+                filteredPeople = Person.<Person>find("name like :search",
+                        Parameters.with("search", "%" + searchVal + "%"));
+            } else {
+                filteredPeople = Person.findAll();
+            }
+            // TODO: Page and return
+            int page_number = start / length;
+            filteredPeople.page(page_number, length);
+
+            result.setRecordsFiltered(filteredPeople.count());
+            result.setData(filteredPeople.list());
+            result.setRecordsTotal(Person.count());
+        } catch (Exception e) {
         }
-        // TODO: Page and return
-        int page_number = start / length;
-        filteredPeople.page(page_number, length);
-
-        result.setRecordsFiltered(filteredPeople.count());
-        result.setData(filteredPeople.list());
-        result.setRecordsTotal(Person.count());
-
         return result;
     }
 
     @Transactional
     void onStart(@Observes StartupEvent ev) {
-        for (int i = 0; i < 1500; i++) {
+        for (int i = 0; i < 1100; i++) {
             String name = CuteNameGenerator.generate();
             LocalDate birth = LocalDate.now().plusWeeks(Math.round(Math.floor(Math.random() * 40 * 52 * -1)));
             EyeColor color = EyeColor.values()[(int) (Math.floor(Math.random() * EyeColor.values().length))];
@@ -128,5 +133,18 @@ public class PersonResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Person byName(@PathParam("name") String name) {
         return Person.find("name", name).firstResult();
+    }
+
+    @GET
+    @Path("/hostname")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getHostname() {
+        String name = "";
+        try {
+            name = InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            name = "error!";
+        }
+        return name;
     }
 }
