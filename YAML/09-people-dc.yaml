@@ -52,6 +52,10 @@ spec:
             - psql postgresql://sa:sa@postgres-database/person -c "\dt"
       containers:
         - resources: {}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/bash", "-c", "sleep 15"]
           readinessProbe:
             httpGet:
               path: /q/health/ready
