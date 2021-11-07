@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: people
+  labels:
+    app.kubernetes.io/name: people
+    app.kubernetes.io/version: 2.0-SNAPSHOT
+    app.openshift.io/runtime: quarkus
+  annotations:
+    app.openshift.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
+    app.quarkus.io/build-timestamp: '2021-10-07 - 13:46:11 +0000'
+    app.quarkus.io/commit-id: c62e365964e66e336b0de3b94fd05fa11d0aab6f
+    app.quarkus.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: people
+    app.kubernetes.io/version: 2.0-SNAPSHOT
+  type: ClusterIP
+  sessionAffinity: None
+
