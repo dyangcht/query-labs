@@ -6,7 +6,7 @@ metadata:
     app.quarkus.io/build-timestamp: '2021-10-07 - 13:46:11 +0000'
     app.quarkus.io/commit-id: c62e365964e66e336b0de3b94fd05fa11d0aab6f
     app.quarkus.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
-  name: people
+  name: people-2
   labels:
     app.kubernetes.io/name: people
     app.kubernetes.io/version: 2.0-SNAPSHOT
