@@ -44,4 +44,14 @@ $ oc apply -f 10-people-svc.yaml
 $ oc autoscale dc/people --min=3 --max=7 --cpu-percent=75
 or
 $ oc autoscale dc/people-2 --min=3 --max=7 --cpu-percent=75
+or 
+$ oc apply -f 11-hpa.yaml
+```
+
+### Login to any pod using debug
+```
+for (( ; ; ) \
+do 
+curl people:8080/person/hostname
+done
 ```
