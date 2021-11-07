@@ -34,7 +34,7 @@ $ curl spring-boot-ui-demo.apps.cluster-99ee.sandbox1882.opentlc.com
 ### Deploy Quarkus backend service "people" version 2
 ``` $ oc apply -f 09-people-dc.yaml ```
 
-### Apply the version 2 of service
+### Apply the version 2 of service, switch to new version
 ```
 $ oc apply -f 10-people-svc.yaml
 ```
