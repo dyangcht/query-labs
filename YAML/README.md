@@ -20,8 +20,20 @@ $ oc apply -f 04-cm.yaml
 ### Deploy Quarkus backend service "people"
 ```
 $ oc apply -f 05-people-dc.yaml
-
+$ oc apply -f 06-people-svc.yaml
 ```
 
 ### 前端用 spring boot 
-``` $ oc new-app openjdk-11-rhel8:1.0~https://github.com/dyangcht/query-labs.git --context-dir=spring-boot-ui --name spring-boot-ui ```
+```
+$ oc apply -f 07-ui-deployment.yaml
+$ oc expose svc spring-boot-ui
+$ oc get route
+$ curl spring-boot-ui-demo.apps.cluster-99ee.sandbox1882.opentlc.com
+```
+
+### Deploy Quarkus backend service "people" version 2
+``` $ oc apply -f 09-people-dc.yaml ```
+
+### Apply the version 2 of service
+```
+```
