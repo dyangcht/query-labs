@@ -3,8 +3,6 @@ apiVersion: apps.openshift.io/v1
 metadata:
   annotations:
     app.openshift.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
-    app.quarkus.io/build-timestamp: '2021-10-07 - 13:46:11 +0000'
-    app.quarkus.io/commit-id: c62e365964e66e336b0de3b94fd05fa11d0aab6f
     app.quarkus.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
   name: people
   labels:
@@ -51,6 +49,7 @@ spec:
             - -c
             - psql postgresql://sa:sa@postgres-database/person -c "\dt"
       containers:
+        - name: people
           lifecycle:
             preStop:
               exec:
@@ -66,7 +65,6 @@ spec:
             successThreshold: 1
             failureThreshold: 3
           terminationMessagePath: /dev/termination-log
-          name: people
           livenessProbe:
             httpGet:
               path: /q/health/live
@@ -102,7 +100,4 @@ spec:
               name: ui-env
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
-      dnsPolicy: ClusterFirst
-      securityContext: {}
-      schedulerName: default-scheduler
   replicas: 4

@@ -3,8 +3,6 @@ apiVersion: apps.openshift.io/v1
 metadata:
   annotations:
     app.openshift.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
-    app.quarkus.io/build-timestamp: '2021-10-07 - 13:46:11 +0000'
-    app.quarkus.io/commit-id: c62e365964e66e336b0de3b94fd05fa11d0aab6f
     app.quarkus.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
   name: people-2
   labels:
@@ -20,6 +18,10 @@ spec:
       timeoutSeconds: 600
       maxUnavailable: 1
       maxSurge: 2
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ConfigChange
   replicas: 4
   selector:
     app.kubernetes.io/name: people
@@ -37,6 +39,10 @@ spec:
       initContainers:
         - name: init-when-postgres-ready
           image: centos/postgresql-96-centos7
+          command:
+            - sh
+            - '-c'
+            - 'psql postgresql://sa:sa@postgres-database/person -c "\dt"'
           env:
             - name: POSTGRESQL_USER
               value: user
@@ -46,26 +52,30 @@ spec:
               value: db
             - name: PGPASSWORD
               value: sa
-          command:
-            - sh
-            - -c
-            - psql postgresql://sa:sa@postgres-database/person -c "\dt"
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
       containers:
-          lifecycle:
-            preStop:
-              exec:
-                command: ["/bin/bash", "-c", "sleep 15"]
+        - resources: {}
           readinessProbe:
             httpGet:
               path: /q/health/ready
               port: 8080
               scheme: HTTP
-            timeoutSeconds: 10
             initialDelaySeconds: 10
+            timeoutSeconds: 10
             periodSeconds: 30
             successThreshold: 1
             failureThreshold: 3
           terminationMessagePath: /dev/termination-log
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/bash
+                  - '-c'
+                  - sleep 15
           name: people-2
           livenessProbe:
             httpGet:
@@ -88,8 +98,6 @@ spec:
               protocol: TCP
           imagePullPolicy: Always
           terminationMessagePolicy: File
-          image: >-
-            dyangcht/qa:v1.1
           resources:
             requests:
               memory: "380Mi"
@@ -98,11 +106,8 @@ spec:
               memory: "480Mi"
               cpu: "250m"
           envFrom:
-          - configMapRef:
-              name: ui-env
+            - configMapRef:
+                name: ui-env
+          image: dyangcht/qa:v1.1
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
-      dnsPolicy: ClusterFirst
-      securityContext: {}
-      schedulerName: default-scheduler
-  replicas: 4
