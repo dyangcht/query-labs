@@ -1,0 +1,29 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: spring-boot-ui
+  labels:
+    app: spring-boot-ui
+    app.kubernetes.io/component: spring-boot-ui
+    app.kubernetes.io/instance: spring-boot-ui
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
+    - name: 8443-tcp
+      protocol: TCP
+      port: 8443
+      targetPort: 8443
+    - name: 8778-tcp
+      protocol: TCP
+      port: 8778
+      targetPort: 8778
+  selector:
+    deployment: spring-boot-ui
+    version: 2.0
+  type: ClusterIP
+  sessionAffinity: None

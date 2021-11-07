@@ -6,9 +6,10 @@ metadata:
     image.openshift.io/triggers: >-
       [{"from":{"kind":"ImageStreamTag","name":"spring-boot-ui:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"spring-boot-ui\")].image"}]
     openshift.io/generated-by: OpenShiftNewApp
-  name: spring-boot-ui
+  name: spring-boot-ui-2
   labels:
     app: spring-boot-ui
+    version: 2.0
     app.kubernetes.io/component: spring-boot-ui
     app.kubernetes.io/instance: spring-boot-ui
 spec:
@@ -16,10 +17,12 @@ spec:
   selector:
     matchLabels:
       deployment: spring-boot-ui
+      version: 2.0
   template:
     metadata:
       labels:
         deployment: spring-boot-ui
+        version: 2.0
       annotations:
         openshift.io/generated-by: OpenShiftNewApp
     spec:
