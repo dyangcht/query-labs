@@ -38,3 +38,10 @@ $ curl spring-boot-ui-demo.apps.cluster-99ee.sandbox1882.opentlc.com
 ```
 $ oc apply -f 10-people-svc.yaml
 ```
+
+### HPA Testing
+```
+$ oc autoscale dc/people --min=3 --max=7 --cpu-percent=75
+or
+$ oc autoscale dc/people-2 --min=3 --max=7 --cpu-percent=75
+```
