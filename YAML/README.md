@@ -36,4 +36,5 @@ $ curl spring-boot-ui-demo.apps.cluster-99ee.sandbox1882.opentlc.com
 
 ### Apply the version 2 of service
 ```
+$ oc apply -f 10-people-svc.yaml
 ```
