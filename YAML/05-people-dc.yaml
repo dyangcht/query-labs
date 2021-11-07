@@ -51,13 +51,6 @@ spec:
             - -c
             - psql postgresql://sa:sa@postgres-database/person -c "\dt"
       containers:
-        - resources:
-          requests:
-            memory: "380Mi"
-            cpu: "50m"
-          limits:
-            memory: "480Mi"
-            cpu: "250m"
           lifecycle:
             preStop:
               exec:
@@ -97,6 +90,13 @@ spec:
           terminationMessagePolicy: File
           image: >-
             dyangcht/qa
+          resources:
+            requests:
+              memory: "380Mi"
+              cpu: "50m"
+            limits:
+              memory: "480Mi"
+              cpu: "250m"
           envFrom:
           - configMapRef:
               name: ui-env
