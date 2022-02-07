@@ -1,5 +1,3 @@
-== What you need
-== What you wull learn
 
 # Query Lab
 
