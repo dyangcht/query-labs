@@ -1,0 +1,112 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  labels:
+    app.kubernetes.io/instance: spring-boot-ui
+    app.kubernetes.io/name: spring-boot-ui
+    pipeline.openshift.io/runtime: java
+    pipeline.openshift.io/runtime-version: openjdk-11-el7
+    pipeline.openshift.io/type: kubernetes
+  name: spring-boot-ui
+  namespace: demo
+spec:
+  params:
+    - default: spring-boot-ui
+      name: APP_NAME
+      type: string
+    - default: 'https://github.com/dyangcht/query-labs.git'
+      name: GIT_REPO
+      type: string
+    - default: v1.2
+      name: GIT_REVISION
+      type: string
+    - default: 'image-registry.openshift-image-registry.svc:5000/demo/spring-boot-ui'
+      name: IMAGE_NAME
+      type: string
+    - default: spring-boot-ui
+      name: PATH_CONTEXT
+      type: string
+    - default: openjdk-11-el7
+      name: VERSION
+      type: string
+  tasks:
+    - name: fetch-repository
+      params:
+        - name: url
+          value: $(params.GIT_REPO)
+        - name: revision
+          value: $(params.GIT_REVISION)
+        - name: subdirectory
+          value: ''
+        - name: deleteExisting
+          value: 'true'
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: workspace
+    - name: build
+      params:
+        - name: IMAGE
+          value: $(params.IMAGE_NAME)
+        - name: TLSVERIFY
+          value: 'false'
+        - name: PATH_CONTEXT
+          value: $(params.PATH_CONTEXT)
+        - name: VERSION
+          value: $(params.VERSION)
+      runAfter:
+        - fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: s2i-java
+      workspaces:
+        - name: source
+          workspace: workspace
+    - name: create-app
+      params:
+        - name: SCRIPT
+          value: >-
+            oc create deployment $(params.APP_NAME) --image=$(params.IMAGE_NAME)
+            --port=8080
+      runAfter:
+        - build
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+    - name: create-svc
+      params:
+        - name: SCRIPT
+          value: >-
+            oc expose deploy $(params.APP_NAME) && oc expose svc
+            $(params.APP_NAME) --port=8081
+      runAfter:
+        - patch
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+    - name: deploy
+      params:
+        - name: SCRIPT
+          value: oc rollout status deploy/$(params.APP_NAME)
+      runAfter:
+        - create-app
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+    - name: patch
+      params:
+        - name: SCRIPT
+          value: >-
+            oc patch deploy/spring-boot-ui -p
+            '{"spec":{"template":{"spec":{"containers":[{"name":"spring-boot-ui","envFrom":[{"configMapRef":{"name":"ui-env"}}]}]}}}}'
+            && oc patch deploy/spring-boot-ui -p
+            '{"spec":{"template":{"spec":{"containers":[{"name":"spring-boot-ui","ports":[{"containerPort":8081}]}]}}}}'
+      runAfter:
+        - deploy
+      taskRef:
+        kind: ClusterTask
+        name: openshift-client
+  workspaces:
+    - name: workspace

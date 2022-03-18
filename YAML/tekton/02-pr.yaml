@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  annotations:
+    pipeline.openshift.io/started-by: 'kube:admin'
+  name: spring-boot-ui-run
+  namespace: demo
+  labels:
+    app.kubernetes.io/instance: spring-boot-ui
+    app.kubernetes.io/name: spring-boot-ui
+    pipeline.openshift.io/runtime: java
+    pipeline.openshift.io/runtime-version: openjdk-11-el7
+    pipeline.openshift.io/type: kubernetes
+    tekton.dev/pipeline: spring-boot-ui
+spec:
+  params:
+    - name: APP_NAME
+      value: spring-boot-ui
+    - name: GIT_REPO
+      value: 'https://github.com/dyangcht/query-labs.git'
+    - name: GIT_REVISION
+      value: v1.2
+    - name: IMAGE_NAME
+      value: 'image-registry.openshift-image-registry.svc:5000/demo/spring-boot-ui'
+    - name: PATH_CONTEXT
+      value: spring-boot-ui
+    - name: VERSION
+      value: openjdk-11-el7
+  pipelineRef:
+    name: spring-boot-ui
+  serviceAccountName: pipeline
+  timeout: 1h0m0s
+  workspaces:
+    - name: workspace
+      persistentVolumeClaim:
+        claimName: spring-boot-ui
