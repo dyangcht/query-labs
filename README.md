@@ -6,4 +6,3 @@
 
 ### 前端用 spring boot 
 ``` $ oc new-app openjdk-11-rhel8:1.0~https://github.com/dyangcht/query-labs.git --context-dir=spring-boot-ui --name spring-boot-ui ```
-...
