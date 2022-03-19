@@ -31,23 +31,24 @@ spec:
       annotations:
         app.openshift.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
         app.quarkus.io/vcs-url: 'https://github.com/dyangcht/query-labs.git'
+        sidecar.istio.io/inject: "true"
     spec:
-      initContainers:
-        - name: init-when-postgres-ready
-          image: centos/postgresql-96-centos7
-          env:
-            - name: POSTGRESQL_USER
-              value: user
-            - name: POSTGRESQL_PASSWORD
-              value: user
-            - name: POSTGRESQL_DATABASE
-              value: db
-            - name: PGPASSWORD
-              value: sa
-          command:
-            - sh
-            - -c
-            - psql postgresql://sa:sa@postgres-database/person -c "\dt"
+      # initContainers:
+        # - name: init-when-postgres-ready
+          # image: centos/postgresql-96-centos7
+          # env:
+            # - name: POSTGRESQL_USER
+              # value: user
+            # - name: POSTGRESQL_PASSWORD
+              # value: user
+            # - name: POSTGRESQL_DATABASE
+              # value: db
+            # - name: PGPASSWORD
+              # value: sa
+          # command:
+            # - sh
+            # - -c
+            # - psql postgresql://sa:sa@postgres-database/person -c "\dt"
       containers:
         - name: people
           lifecycle:
