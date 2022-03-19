@@ -69,7 +69,7 @@ spec:
         - name: SCRIPT
           value: >-
             oc create deployment $(params.APP_NAME) --image=$(params.IMAGE_NAME)
-            --port=8080
+            --port=8080 -n demo
       runAfter:
         - build
       taskRef:
@@ -79,8 +79,8 @@ spec:
       params:
         - name: SCRIPT
           value: >-
-            oc expose deploy $(params.APP_NAME) && oc expose svc
-            $(params.APP_NAME) --port=8081
+            oc expose deploy $(params.APP_NAME) -n demo && oc expose svc
+            $(params.APP_NAME) --port=8081 -n demo
       runAfter:
         - patch
       taskRef:
@@ -89,7 +89,7 @@ spec:
     - name: deploy
       params:
         - name: SCRIPT
-          value: oc rollout status deploy/$(params.APP_NAME)
+          value: oc rollout status deploy/$(params.APP_NAME) -n demo
       runAfter:
         - create-app
       taskRef:
@@ -100,9 +100,9 @@ spec:
         - name: SCRIPT
           value: >-
             oc patch deploy/spring-boot-ui -p
-            '{"spec":{"template":{"spec":{"containers":[{"name":"spring-boot-ui","envFrom":[{"configMapRef":{"name":"ui-env"}}]}]}}}}'
+            '{"spec":{"template":{"spec":{"containers":[{"name":"spring-boot-ui","envFrom":[{"configMapRef":{"name":"ui-env"}}]}]}}}}' -n demo
             && oc patch deploy/spring-boot-ui -p
-            '{"spec":{"template":{"spec":{"containers":[{"name":"spring-boot-ui","ports":[{"containerPort":8081}]}]}}}}' && oc patch deploy/spring-boot-ui -p '{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"true"}}}}}'
+            '{"spec":{"template":{"spec":{"containers":[{"name":"spring-boot-ui","ports":[{"containerPort":8081}]}]}}}}' -n demo && oc patch deploy/spring-boot-ui -p '{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"true"}}}}}' -n demo
       runAfter:
         - deploy
       taskRef:
