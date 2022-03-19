@@ -4,7 +4,6 @@ metadata:
   annotations:
     pipeline.openshift.io/started-by: 'kube:admin'
   name: spring-boot-ui-run
-  namespace: demo
   labels:
     app.kubernetes.io/instance: spring-boot-ui
     app.kubernetes.io/name: spring-boot-ui
