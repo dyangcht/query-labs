@@ -102,7 +102,7 @@ spec:
             oc patch deploy/spring-boot-ui -p
             '{"spec":{"template":{"spec":{"containers":[{"name":"spring-boot-ui","envFrom":[{"configMapRef":{"name":"ui-env"}}]}]}}}}'
             && oc patch deploy/spring-boot-ui -p
-            '{"spec":{"template":{"spec":{"containers":[{"name":"spring-boot-ui","ports":[{"containerPort":8081}]}]}}}}'
+            '{"spec":{"template":{"spec":{"containers":[{"name":"spring-boot-ui","ports":[{"containerPort":8081}]}]}}}}' && oc patch deploy/spring-boot-ui -p '{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"true"}}}}}'
       runAfter:
         - deploy
       taskRef:
