@@ -34,7 +34,7 @@ spec:
         - name: GIT_REVISION
           value: v1.2
         - name: IMAGE_NAME
-          value: 'image-registry.openshift-image-registry.svc:5000/flow/spring-boot-ui'
+          value: 'image-registry.openshift-image-registry.svc:5000/demo/spring-boot-ui'
         - name: PATH_CONTEXT
           value: spring-boot-ui
         - name: VERSION

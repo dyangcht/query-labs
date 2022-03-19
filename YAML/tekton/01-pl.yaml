@@ -19,7 +19,7 @@ spec:
     - default: v1.2
       name: GIT_REVISION
       type: string
-    - default: 'image-registry.openshift-image-registry.svc:5000/flow/spring-boot-ui'
+    - default: 'image-registry.openshift-image-registry.svc:5000/demo/spring-boot-ui'
       name: IMAGE_NAME
       type: string
     - default: spring-boot-ui
